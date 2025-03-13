@@ -30,6 +30,11 @@ function filterNextFiveDays($csvData) {
     return $filteredLines; //Return Array, not string.
 }
 
+function formatTime($time) {
+    $timesplit = explode(":", $time);
+    return sprintf("%02d:%02d", $timesplit[0], $timesplit[1]);
+}
+
 function processCSVFile($filePath) {
     if (file_exists($filePath)) {
         $csvData = file_get_contents($filePath);
@@ -51,6 +56,8 @@ function processCSVFile($filePath) {
             for ($i = 1; $i < count($filteredData); $i++) {
                 $row = explode(",", $filteredData[$i]);
                 $row[1] = str_replace('"', '', $row[1]);
+                $row[3] = formatTime($row[3]);
+                $row[5] = formatTime($row[5]);                
                 echo "<tr><td style='border: 1px solid #ddd; padding: 8px;'>". htmlspecialchars($row[1]) ."</td>";
                 for ($j = 2; $j < 6; $j++) {
                     echo "<td style='border: 1px solid #ddd; padding: 8px;'>". htmlspecialchars($row[$j]) ."</td>";
